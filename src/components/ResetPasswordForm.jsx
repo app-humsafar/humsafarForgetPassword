@@ -22,7 +22,7 @@ const ResetPasswordForm = () => {
 
         // Reset the message
         setMessage('Password has been reset successfully.');
-        
+
         // Reset states
         setPassword('');
         setConfirmPassword('');
@@ -30,9 +30,9 @@ const ResetPasswordForm = () => {
 
     return (
         <Container maxWidth="sm">
-            <Box 
-                component="form" 
-                onSubmit={handleSubmit} 
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
                 sx={{
                     mt: 5,
                     display: 'flex',
@@ -44,32 +44,105 @@ const ResetPasswordForm = () => {
                     boxShadow: 3
                 }}
             >
-                <Typography variant="h4" component="h2" gutterBottom>
+                <Typography variant="h4" component='h2' color='white' gutterBottom>
                     Reset Password
                 </Typography>
+
                 <TextField
                     type="password"
                     label="New Password"
                     variant="outlined"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    fullWidth
                     required
-                    sx={{ mb: 2 }}
+                    InputLabelProps={{
+                        style: {
+                            color: 'white',
+                            '&:hover': {
+                                color: 'white',
+                            },
+                        },
+                    }}
+                    InputProps={{
+                        style: {
+                            color: 'white',
+                            '&:hover': {
+                                color: 'black',
+                            },
+                            '&:focus': {
+                                color: 'black',
+                            },
+                        },
+                    }}
+                    sx={{
+                        width: '90%',
+                        mb: 2,
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: 'white',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: 'white',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: 'white',
+                            },
+                        },
+                    }}
                 />
+
                 <TextField
                     type="password"
                     label="Confirm Password"
                     variant="outlined"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    fullWidth
                     required
-                    sx={{ mb: 2 }}
+                    InputLabelProps={{
+                        style: {
+                            color: 'white',
+                            '&:hover': {
+                                color: 'white',
+                            },
+                        },
+                    }}
+                    InputProps={{
+                        style: {
+                            color: 'white',
+                            '&:hover': {
+                                color: 'black',
+                            },
+                            '&:focus': {
+                                color: 'black',
+                            },
+                        },
+                    }}
+                    sx={{
+                        mb: 2,
+                        width: '90%',
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: 'white',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: 'white',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: 'white',
+                            },
+                        },
+                    }}
                 />
-                <Button type="submit" variant="contained" color="primary" fullWidth>
+
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ width: '80%' }}
+                    style={{ backgroundColor: 'black', color: 'white' }}
+                >
                     Reset Password
                 </Button>
+
                 {message && (
                     <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 2 }}>
                         {message}
