@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/reset-password/:token" element={<MainComponent />} />
+        <Route path="/reset-password" element={<MainComponent />} />
         {/* Add other routes here */}
       </Routes>
     </Router>
