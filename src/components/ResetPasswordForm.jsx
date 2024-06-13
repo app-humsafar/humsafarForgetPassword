@@ -1,8 +1,8 @@
-// src/ResetPasswordForm.js
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'; // Import the check icon
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const ResetPasswordForm = () => {
     const location = useLocation();
@@ -12,25 +12,35 @@ const ResetPasswordForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false); // State to handle success
+    const [isSuccess, setIsSuccess] = useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (password !== confirmPassword) {
             setMessage('Passwords do not match.');
             return;
         }
 
-        // Make a request to your backend server to handle the password reset
-        console.log('Token:', token);
-        console.log('Password:', password);
+        try {
+            const response = await axios.post('https://humsafar-satgging-be-78ceb721e8d8.herokuapp.com/auth/resetPassword', {
+                newPassword: password,
+                confirmPassword: confirmPassword
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-        // Set success state
-        setIsSuccess(true);
-
-        // Reset states
-        setPassword('');
-        setConfirmPassword('');
+            if (response.status === 201) {
+                setIsSuccess(true);
+            } else {
+                setMessage(response.data.message || 'Something went wrong.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setMessage(error.response?.data?.message || 'An error occurred. Please try again.');
+        }
     };
 
     return (
@@ -48,8 +58,8 @@ const ResetPasswordForm = () => {
                         boxShadow: 3,
                     }}
                 >
-                    <CheckCircleOutlineIcon sx={{ color: 'green', fontSize: { lg: 90, xs: 50 } }} />
-                    <Typography variant="h6" color="white" textAlign="center" sx={{ mt: 2 }}>
+                    <CheckCircleOutlineIcon style={{ color: 'green', fontSize: 50 }} />
+                    <Typography variant="h6" color="white" sx={{ mt: 2 }}>
                         Your password has been successfully changed.
                     </Typography>
                 </Box>
