@@ -3,6 +3,8 @@ import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ResetPasswordForm = () => {
     const location = useLocation();
@@ -11,13 +13,12 @@ const ResetPasswordForm = () => {
 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [message, setMessage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-            setMessage('Passwords do not match.');
+            toast.error('Passwords do not match.');
             return;
         }
 
@@ -34,17 +35,22 @@ const ResetPasswordForm = () => {
 
             if (response.status === 201) {
                 setIsSuccess(true);
+                toast.success('Your password has been successfully changed.');
             } else {
-                setMessage(response.data.message || 'Something went wrong.');
+                toast.error(response.data.message || 'Something went wrong.');
             }
         } catch (error) {
             console.error('Error:', error);
-            setMessage(error.response?.data?.message || 'An error occurred. Please try again.');
+            const errorMessage = error.response?.data?.message === 'jwt expired'
+                ? 'The password reset link has expired or is invalid. Please request a new password reset.'
+                : error.response?.data?.message || 'An error occurred. Please try again.';
+            toast.error(errorMessage);
         }
     };
 
     return (
         <Container maxWidth="sm">
+            <ToastContainer />
             {isSuccess ? (
                 <Box
                     sx={{
@@ -176,12 +182,6 @@ const ResetPasswordForm = () => {
                     >
                         Reset Password
                     </Button>
-
-                    {message && (
-                        <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-                            {message}
-                        </Typography>
-                    )}
                 </Box>
             )}
         </Container>
